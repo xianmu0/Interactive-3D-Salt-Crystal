@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式 NaCl 晶体结构 3D 模型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: #000;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            z-index: 100;
+            max-width: 300px;
+        }
+
+        #info h1 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        #info p {
+            margin: 5px 0;
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            z-index: 100;
+        }
+
+        #controls p {
+            margin: 5px 0;
+        }
+
+        #model-selector {
+            margin-bottom: 15px;
+        }
+
+        #model-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        #model-select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #model-select:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        #model-select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .model-legend {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="info">
+        <h1 id="model-title">NaCl 晶体结构</h1>
+        <div id="model-selector" style="margin-bottom: 15px;">
+            <label for="model-select" style="display: block; margin-bottom: 8px; font-size: 13px;">选择模型：</label>
+            <select id="model-select" style="width: 100%; padding: 5px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 13px;">
+                <option value="nacl">氯化钠 (NaCl)</option>
+                <option value="pcl5">五氯化磷 (PCl₅)</option>
+            </select>
+        </div>
+        <div id="legend-container">
+            <div id="nacl-legend" class="model-legend">
+                <div class="legend">
+                    <div class="legend-color" style="background: #9b59b6;"></div>
+                    <span>钠离子 (Na⁺)</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span>氯离子 (Cl⁻)</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
+                    面心立方结构<br>
+                    每个离子周围有6个相反电荷的离子
+                </p>
+            </div>
+            <div id="pcl5-legend" class="model-legend" style="display: none;">
+                <div class="legend">
+                    <div class="legend-color" style="background: #e67e22;"></div>
+                    <span>磷原子 (P)</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span>氯原子 (Cl)</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
+                    三角双锥结构<br>
+                    3个赤道Cl，2个轴向Cl
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <p><strong>操作说明：</strong></p>
+        <p>🖱️ 左键拖拽：旋转视角</p>
+        <p>🔍 滚轮：缩放</p>
+        <p>🖱️ 右键拖拽：平移</p>
+        <p>📱 触屏：双指缩放，单指旋转</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
